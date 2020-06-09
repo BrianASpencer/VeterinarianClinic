@@ -1,0 +1,29 @@
+CREATE DATABASE clinicdb;
+
+USE clinicdb;
+
+CREATE TABLE vets(
+	uid INT AUTO_INCREMENT,
+	uName VARCHAR(50),
+	pWord VARCHAR(20),
+	PRIMARY KEY(uid)
+);
+
+CREATE TABLE patients(
+	pid INT AUTO_INCREMENT,
+	ownerID INT,
+	fName VARCHAR(20),
+	species VARCHAR(20),
+	color VARCHAR(20),
+	dOB DATE,
+	PRIMARY KEY(pid),
+	FOREIGN KEY (ownerID) REFERENCES owners(oid)
+);
+
+CREATE TABLE owners(
+	oid INT AUTO_INCREMENT,
+	fName VARCHAR(20),
+	lName VARCHAR(20),
+	phoneNum VARCHAR(20),
+	PRIMARY KEY(oid)
+);
