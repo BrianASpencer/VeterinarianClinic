@@ -1,11 +1,11 @@
 <?php
 include("config.php");
-session_start();
 $error = "";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     $myusername = mysqli_real_escape_string($db,$_POST['username']);
     $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
+    $myConfpassword = mysqli_real_escape_string($db,$_POST['confPassword']); 
 
     $sql = "SELECT vid FROM vets WHERE uName = '".$myusername."' and pWord = '".$mypassword."';";
     $result = mysqli_query($db,$sql);
@@ -15,14 +15,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $count = mysqli_num_rows($result);
 
     // If result matched $myusername and $mypassword, table row must be 1 row
-    // this means there is a user that exists with these credentials
-    if($count == 1) {
-        //session_register("myusername");
-        $_SESSION['login_user'] = $myusername;
-        header("location: welcome.php");
-        exit();
+
+    if($count == 0) {
+        $sql = "INSERT INTO vets VALUES('".$myusername."','".$mypassword."');";
+        $result = mysqli_query($db,$sql);
+        header("location:login.php");
     } else {
-        $error = "Invalid login. Please try again.";
+        $error = "User already exists.";
     }
     
     //user wnats to create an account
@@ -31,9 +30,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       exit();
     }
 }
-
-
-
 ?>
 
 <html>
@@ -51,24 +47,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <body class="p-3 mb-2 bg-primary text-white">
         
-        <h1 class="display-1">Clinic Manager</h1>
-        
-        <br><br>
-        
         <div align = "center">
             <div style = "width:50%; border: solid 2px #333333; border-radius: 5px; border-color: white; " align = "left">
 
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2" name="username">
+                        <input type="text" class="form-control" placeholder="Your Username" aria-label=" Your Username" aria-describedby="basic-addon2" name="username">
                         <br>
-                        <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" name="password">
+                        <input type="password" class="form-control" placeholder="Your Password" aria-label="Your Password" aria-describedby="basic-addon2" name="password">
                         <br>
-                        <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
-                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Login</button>
-                        <button type="submit" name="createAccount" class="btn btn-secondary btn-lg btn-block">Create New Account</button>
-                        <div style = "font-size:11px; color: white;">Need to create an account? Click here.</div>
+                        <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="basic-addon2" name="confPassword">
+                        <br>
+                        <div style = "font-size:11px; color:#cc0000;"><?php echo $error; ?></div>
+                        <button type="submit" class="btn btn-secondary btn-lg btn-block">Create New Account</button>
                     </form>
 
                 </div>
