@@ -49,7 +49,7 @@ function renderPatientTable($patients){
         $species = htmlspecialchars($row['species']);
         $color = htmlspecialchars($row['color']);
         $dateOfBirth = $row['dOB'];
-        print "<tr><td>$pid</td><td>$oid</td><td>$name</td><td>$species</td><td>$color</td><td>$dateOfBirth</td><td><a href = 'editPatient.php?id='".$row['pid']."' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a> <a href = 'deleteOwner.php?id='".$row['pid']."' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></tr>";
+        print "<tr><td>$pid</td><td>$oid</td><td>$name</td><td>$species</td><td>$color</td><td>$dateOfBirth</td><td><div><a href ='welcome.php?editpid=$pid' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deletepid=$pid' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
     }
     print "</table></div>";
 }
@@ -62,7 +62,7 @@ function renderOwnerTable($patients){
         $fname = htmlspecialchars($row['fName']);
         $lname = htmlspecialchars($row['lName']);
         $phone = htmlspecialchars($row['phoneNum']);
-        print "<tr><td>$oid</td><td>$fname</td><td>$lname</td><td>$phone</td><td><a href = 'editOwner.php?id='".$row['oid']."' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a> <a href = 'deletePatient.php?id='".$row['oid']."' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></tr>";
+        print "<tr><td>$oid</td><td>$fname</td><td>$lname</td><td>$phone</td><td><div><a href ='welcome.php?editoid=$oid' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deleteoid=$oid' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
     }
     print "</table></div>";
 }
@@ -84,18 +84,17 @@ function generate($data) {
 }
 
 function deleteOwner($target) {
-    print '<h1>oof</h1>';
-    $query = "DELETE FROM owners WHERE id='$target';";
+    $query = "DELETE FROM owners WHERE oid=$target;";
     $result = query($query);
-    $newTable = generate('Patients');
-    //$new_html = preg_replace("/(<table>).*?(<\/table>)/s", "", $newTable);
+    $newTable = generate('Owners');
+    $new_html = preg_replace("/(<table>).*?(<\/table>)/s", "", $newTable);
 }
 
 function deletePatient($target) {
     print '<h1>oof</h1>';
-    $query = "DELETE FROM patient WHERE id='$target';";
+    $query = "DELETE FROM patients WHERE pid=$target;";
     $result = query($query);
-    $newTable = generate('Owners');
+    $newTable = generate('Patients');
 }
 
 generate('Patients');
@@ -119,6 +118,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         header("location:addPatient.php");
         exit();
     }
+}
+
+if(isset($_REQUEST['editoid'])) {
+    $oid = intval($_REQUEST['editoid']);
+    header("Location:editOwner.php?oid=$oid");
+    exit();
+}
+if(isset($_REQUEST['deleteoid'])) {
+    $oid = intval($_REQUEST['deleteoid']);
+    header("Location:deleteOwner.php?oid=$oid");
+    exit();
+}
+if(isset($_REQUEST['editpid'])) {
+    $pid = intval($_REQUEST['editpid']);
+    header("Location:editPatient.php?pid=$pid");
+    exit();
+}
+if(isset($_REQUEST['deletepid'])) {
+    $pid = intval($_REQUEST['deletepid']);
+    header("Location:deletePatient.php?pid=$pid");
+    exit();
 }
 
 

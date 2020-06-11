@@ -1,18 +1,23 @@
 <?php
 include("config.php");
-session_start();
-$id = $_GET['id'];
-print "<h1>Are you sure you want to delete Owner $id?</h1>";
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //user wnats to create an account
-    if(isset($_POST['delete'])){
-        mysqli_query($db,"DELETE FROM owners WHERE id='".$id."'");
-        header("location:welcome.php");
-        exit();
+$oid = $_GET['oid'];
+
+function query($query) {
+    global $db;
+    $result = mysqli_query($db, $query);
+    if (!$result) {
+        return -1;
     }
+    return $result; 
 }
 
 
+$query = "DELETE FROM owners WHERE oid=$oid;";
+
+query($query);
+
+header("Location: welcome.php");
+exit();
 
 ?>
 

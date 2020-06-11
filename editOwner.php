@@ -1,15 +1,32 @@
 <?php
 include("config.php");
-session_start();
-$id = $_GET['id'];
+
+$ownerID = $_GET['oid'];
+
+function query($query) {
+    global $db;
+    $result = mysqli_query($db, $query);
+    if (!$result) {
+        return -1;
+    }
+    return $result; 
+}
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     //user wnats to create an account
     if(isset($_POST['submit'])){
-        mysqli_query($db,"DELETE FROM owners WHERE id='".$id."'");
         header("location:welcome.php");
         exit();
     }
 }
+
+$query = "SELECT * FROM owners WHERE oid=$ownerID";
+$result = query($query);
+$fields = mysqli_fetch_assoc($result);
+$fnPlace = htmlspecialchars($fields['fName']);
+$lnPlace = htmlspecialchars($fields['lName']);
+$pnPlace = htmlspecialchars($fields['phoneNum']);
 
 ?>
 
@@ -33,16 +50,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <div align = "center">
+            <h4>Update any fields and click Submit Changes when done.</h4>
             <div style = "width:50%; border: solid 2px #333333; border-radius: 5px; border-color: white; " align = "left">
 
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon2" name="firstName">
+                        <input type="text" class="form-control" placeholder="<?php echo $fnPlace; ?>" name="firstName">
                         <br>
-                        <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon2" name="lastName">
+                        <input type="text" class="form-control" placeholder="<?php echo $lnPlace; ?>" name="lastName">
                         <br>
-                        <input type="text" class="form-control" placeholder="Phone Number 123-456-7890" aria-label="Phone Number 123-456-7890" aria-describedby="basic-addon2" name="phoneNumber">
+                        <input type="text" class="form-control" placeholder="<?php echo $pnPlace; ?>" name="phoneNumber">
                         <br>
                         <button type="submit" name="edit" class="btn btn-secondary btn-lg btn-block">Submit Changes</button>
                     </form>

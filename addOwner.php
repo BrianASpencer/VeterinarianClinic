@@ -3,9 +3,14 @@ include("config.php");
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     //user wnats to create an account
     if(isset($_POST['add'])){
-        mysqli_query($db,"DELETE FROM owners WHERE id='".$id."'");
-        header("location:welcome.php");
-        exit();
+        global $db;
+        $fName = $_POST['firstName'];
+        $lName = $_POST['lastName'];
+        $phoneNum = $_POST['phoneNumber'];
+        echo $fName, $lName, $phoneNum;
+        mysqli_query($db,"INSERT INTO owners(fName, lName, phoneNum) VALUES('".$fName."', '".$lName."', '".$phoneNum."');");
+        //header("location:welcome.php");
+        //exit();
     }
 }
 

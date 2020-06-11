@@ -1,15 +1,33 @@
 <?php
 include("config.php");
-session_start();
-$id = $_GET['id'];
+
+$patientID = $_GET['pid'];
+
+function query($query) {
+    global $db;
+    $result = mysqli_query($db, $query);
+    if (!$result) {
+        return -1;
+    }
+    return $result; 
+}
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     //user wnats to create an account
     if(isset($_POST['submit'])){
-        mysqli_query($db,"DELETE FROM owners WHERE id='".$id."'");
         header("location:welcome.php");
         exit();
     }
 }
+
+$query = "SELECT * FROM patients WHERE pid=$patientID";
+$result = query($query);
+$fields = mysqli_fetch_assoc($result);
+$nPlace = htmlspecialchars($fields['fName']);
+$sPlace = htmlspecialchars($fields['species']);
+$cPlace = htmlspecialchars($fields['color']);
+$bPlace = htmlspecialchars($fields['dOB']);
 
 ?>
 
@@ -33,18 +51,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         <br><br>
 
         <div align = "center">
+            <h4>Update any fields and click Submit Changes when done.</h4>
             <div style = "width:50%; border: solid 2px #333333; border-radius: 5px; border-color: white; " align = "left">
 
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon2" name="name">
+                        <input type="text" class="form-control" placeholder="<?php echo $nPlace; ?>" name="name">
                         <br>
-                        <input type="text" class="form-control" placeholder="Species" aria-label="Species" aria-describedby="basic-addon2" name="species">
+                        <input type="text" class="form-control" placeholder="<?php echo $sPlace; ?>" name="species">
                         <br>
-                        <input type="text" class="form-control" placeholder="Color" aria-label="Color" aria-describedby="basic-addon2" name="color">
+                        <input type="text" class="form-control" placeholder="<?php echo $cPlace; ?>" name="color">
                         <br>
-                        <input type="text" class="form-control" placeholder="Date Of Birth YYYY-MM-DD" aria-label="Date Of Birth YYYY-MM-DD" aria-describedby="basic-addon2" name="birth">
+                        <input type="text" class="form-control" placeholder="<?php echo $bPlace; ?>" name="birth">
                         <br>
                         <button type="submit" name="submit" class="btn btn-secondary btn-lg btn-block">Submit Changes</button>
                     </form>

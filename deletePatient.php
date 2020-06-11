@@ -1,18 +1,23 @@
 <?php
 include("config.php");
-session_start();
-$id = $_GET['id'];
-print "<h1>Are you sure you want to delete Patient $id?</h1>";
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //user wnats to create an account
-    if(isset($_POST['delete'])){
-        mysqli_query($db,"DELETE FROM patient WHERE id='".$id."'");
-        header("location:welcome.php");
-        exit();
+$pid = $_GET['pid'];
+
+function query($query) {
+    global $db;
+    $result = mysqli_query($db, $query);
+    if (!$result) {
+        return -1;
     }
+    return $result; 
 }
 
 
+$query = "DELETE FROM patients WHERE pid=$pid;";
+
+query($query);
+
+header("Location: welcome.php");
+exit();
 
 ?>
 
