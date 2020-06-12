@@ -1,12 +1,21 @@
 <?php
+// for database connnection
 include("config.php");
+
 session_start();
 $error = "";
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if(isset($_POST['login'])) {
-        $myusername = mysqli_real_escape_string($db,$_POST['username']);
-        $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
+        if (!filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {
+            $error = "A valid email address is required.";
+            goto end;
+        } else {
+            $myusername = mysqli_real_escape_string($db,$_POST['username']);
+            $mypassword = mysqli_real_escape_string($db,$_POST['password']);
+        }
+        
 
         $sql = "SELECT vid FROM vets WHERE uName = '".$myusername."' and pWord = '".$mypassword."';";
         $result = mysqli_query($db,$sql);
@@ -22,10 +31,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['login_user'] = $myusername;
             header("location: welcome.php");
             exit();
+        } else if ($count == 0) {
+            $error = "User doesn't exist.";
         } else {
+            // invalid login to let them know to try again
             $error = "Invalid login. Please try again.";
         }
     }
+    end:
 
     //user wnats to create an account
     if(isset($_POST['createAccount'])){
@@ -34,15 +47,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
-
 ?>
 
 <html>
 
     <head>
         <title>Login</title>
-
+        <link rel="shortcut icon" href="parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
         <link rel="stylesheet" href="design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -52,9 +63,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </head>
 
     <body class="p-3 mb-2 bg-primary text-white">
-
-        <h1 class="display-1">Clinic Manager</h1>
-
+        <div>
+            <h1 class="display-1">Clinic Manager</h1>
+            <img src="hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
+        </div>
+        
         <br><br>
 
         <div align = "center">
@@ -67,10 +80,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                         <br>
                         <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" name="password">
                         <br>
-                        <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
+                        <div style = "font-size:11px; color: white;" class="font-weight-bold"><?php echo $error; ?></div>
                         <button type="submit" name="login" class="btn btn-secondary btn-lg btn-block">Login</button>
                         <button type="submit" name="createAccount" class="btn btn-secondary btn-lg btn-block">Create New Account</button>
-                        <div style = "font-size:11px; color: white;">Need to create an account? Click here.</div>
+                        <div style = "font-size:11px; color: white;" class="font-weight-bold">Need to create an account? Click above.</div>
                     </form>
 
                 </div>
@@ -78,6 +91,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
         </div>
+        
+        <br>
+        <footer>
+            <p class="text-center font-weight-bold">Copyright &copy; Hippo Manager Assessment</p>
+            <p class="text-center font-weight-bold">Created by Brian Spencer</p>
+        </footer>
 
     </body>
 </html>

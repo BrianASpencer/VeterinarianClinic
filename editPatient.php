@@ -1,8 +1,16 @@
 <?php
+// for database connnection
 include("config.php");
 
-$patientID = $_GET['pid'];
-
+// make sure the ID passed is an integer, otherwise go back to welcome page.
+if(is_numeric($_GET['pid'])){
+    $patientID = intval($_GET['pid']);
+} else {
+    header("location:welcome.php");
+    exit();
+}
+    
+// function to query the database
 function query($query) {
     global $db;
     $result = mysqli_query($db, $query);
@@ -12,22 +20,24 @@ function query($query) {
     return $result; 
 }
 
-
+// lookign at POST form to see if submit button was pressed
+// if so, query database to edit patient
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //user wnats to create an account
     if(isset($_POST['submit'])){
         header("location:welcome.php");
         exit();
     }
 }
 
+// these statements query and then fill in the fields of the boxes
 $query = "SELECT * FROM patients WHERE pid=$patientID";
 $result = query($query);
 $fields = mysqli_fetch_assoc($result);
-$nPlace = htmlspecialchars($fields['fName']);
-$sPlace = htmlspecialchars($fields['species']);
-$cPlace = htmlspecialchars($fields['color']);
-$bPlace = htmlspecialchars($fields['dOB']);
+$ownerID = "Owner's ID: ".htmlspecialchars($fields['ownerID']);
+$nPlace = "Name: ".htmlspecialchars($fields['fName']);
+$sPlace = "Species: ".htmlspecialchars($fields['species']);
+$cPlace = "Color: ".htmlspecialchars($fields['color']);
+$bPlace = "DOB: ".htmlspecialchars($fields['dOB']);
 
 ?>
 
@@ -35,7 +45,7 @@ $bPlace = htmlspecialchars($fields['dOB']);
 
     <head>
         <title>Edit Patient</title>
-
+        <link rel="shortcut icon" href="parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
         <link rel="stylesheet" href="design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -47,7 +57,7 @@ $bPlace = htmlspecialchars($fields['dOB']);
     <body class="p-3 mb-2 bg-primary text-white">
 
         <h1 class="display-1">Clinic Manager</h1>
-
+        <img src="hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
         <br><br>
 
         <div align = "center">
@@ -57,6 +67,8 @@ $bPlace = htmlspecialchars($fields['dOB']);
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
+                        <input type="text" class="form-control" placeholder="<?php echo $ownerID; ?>" name="ownerID">
+                        <br>
                         <input type="text" class="form-control" placeholder="<?php echo $nPlace; ?>" name="name">
                         <br>
                         <input type="text" class="form-control" placeholder="<?php echo $sPlace; ?>" name="species">
@@ -73,6 +85,12 @@ $bPlace = htmlspecialchars($fields['dOB']);
             </div>
 
         </div>
+        
+        <br>
+        <footer>
+            <p class="text-center font-weight-bold">Copyright &copy; Hippo Manager Assessment</p>
+            <p class="text-center font-weight-bold">Created by Brian Spencer</p>
+        </footer>
 
     </body>
 </html>

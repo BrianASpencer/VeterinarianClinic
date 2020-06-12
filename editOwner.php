@@ -1,8 +1,16 @@
 <?php
+// for database connnection
 include("config.php");
 
-$ownerID = $_GET['oid'];
+// make sure the ID passed is an integer, otherwise go back to welcome page.
+if(is_numeric($_GET['oid'])){
+    $ownerID = intval($_GET['oid']);
+} else {
+    header("location:welcome.php");
+    exit();
+}
 
+// function to query the database
 function query($query) {
     global $db;
     $result = mysqli_query($db, $query);
@@ -12,7 +20,8 @@ function query($query) {
     return $result; 
 }
 
-
+// lookign at POST form to see if submit button was pressed
+// if so, query database to edit owner
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     //user wnats to create an account
     if(isset($_POST['submit'])){
@@ -21,12 +30,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// these statements query and then fill in the fields of the boxes
 $query = "SELECT * FROM owners WHERE oid=$ownerID";
 $result = query($query);
 $fields = mysqli_fetch_assoc($result);
-$fnPlace = htmlspecialchars($fields['fName']);
-$lnPlace = htmlspecialchars($fields['lName']);
-$pnPlace = htmlspecialchars($fields['phoneNum']);
+$fnPlace = "First Name: ".htmlspecialchars($fields['fName']);
+$lnPlace = "Last Name: ".htmlspecialchars($fields['lName']);
+$pnPlace = "Phone Number: ".htmlspecialchars($fields['phoneNum']);
 
 ?>
 
@@ -34,7 +44,7 @@ $pnPlace = htmlspecialchars($fields['phoneNum']);
 
     <head>
         <title>Edit Owner</title>
-
+        <link rel="shortcut icon" href="parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
         <link rel="stylesheet" href="design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -46,7 +56,7 @@ $pnPlace = htmlspecialchars($fields['phoneNum']);
     <body class="p-3 mb-2 bg-primary text-white">
 
         <h1 class="display-1">Clinic Manager</h1>
-
+        <img src="hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
         <br><br>
 
         <div align = "center">
@@ -70,6 +80,12 @@ $pnPlace = htmlspecialchars($fields['phoneNum']);
             </div>
 
         </div>
+        
+        <br>
+        <footer>
+            <p class="text-center font-weight-bold">Copyright &copy; Hippo Manager Assessment</p>
+            <p class="text-center font-weight-bold">Created by Brian Spencer</p>
+        </footer>
 
     </body>
 </html>
