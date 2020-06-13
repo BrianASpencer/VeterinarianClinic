@@ -31,8 +31,8 @@ function query($query) {
 
 // this function renders patients from an array as a table
 function renderPatientTable($patients){
-    print "<div class='table-responsive'><table class='table'>";
-    print "<tr><td>PatientID</td><td>OwnerID</td><td>Name</td><td>Species</td><td>Color</td><td>Date Of Birth</td><td>Actions</td></tr>";
+    print "<div class='table-responsive'><table class='table table-dark'>";
+    print "<tr><td class = 'active font-weight-bold'>PatientID</td><td class = 'active font-weight-bold'>OwnerID</td><td>Name</td><td class = 'active font-weight-bold'>Species</td><td class = 'active font-weight-bold'>Color</td><td class = 'active font-weight-bold'>Date Of Birth</td><td class = 'active font-weight-bold'>Actions</td></tr>";
     foreach($patients as $row){
         $pid = htmlspecialchars($row['pid']);
         $oid = htmlspecialchars($row['ownerID']);
@@ -40,21 +40,21 @@ function renderPatientTable($patients){
         $species = htmlspecialchars($row['species']);
         $color = htmlspecialchars($row['color']);
         $dateOfBirth = $row['dOB'];
-        print "<tr><td>$pid</td><td>$oid</td><td>$name</td><td>$species</td><td>$color</td><td>$dateOfBirth</td><td><div><a href ='welcome.php?editpid=$pid' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deletepid=$pid' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
+        print "<tr><td>$pid</td><td>$oid</td><td>$name</td><td>$species</td><td>$color</td><td>$dateOfBirth</td><td><div><a href ='welcome.php?editpid=$pid' class='btn btn-primary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deletepid=$pid' class='btn btn-primary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
     }
     print "</table></div>";
 }
 
 // this function renders owners from an array as a table
 function renderOwnerTable($patients){
-    print "<div class='table-responsive'><table class='table'>";
-    print "<tr><td>OwnerID</td><td>First Name</td><td>Last Name</td><td>Phone Number</td><td>Actions</td></tr>";
+    print "<div class='table-responsive'><table class='table table-dark'>";
+    print "<tr><td class = 'active font-weight-bold'>OwnerID</td><td class = 'active font-weight-bold'>First Name</td><td class = 'active font-weight-bold'>Last Name</td><td class = 'active font-weight-bold'>Phone Number</td><td class = 'active font-weight-bold'>Actions</td></tr>";
     foreach($patients as $row){
         $oid = htmlspecialchars($row['oid']);
         $fname = htmlspecialchars($row['fName']);
         $lname = htmlspecialchars($row['lName']);
         $phone = htmlspecialchars($row['phoneNum']);
-        print "<tr><td>$oid</td><td>$fname</td><td>$lname</td><td>$phone</td><td><div><a href ='welcome.php?editoid=$oid' class='btn btn-secondary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deleteoid=$oid' class='btn btn-secondary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
+        print "<tr><td>$oid</td><td>$fname</td><td>$lname</td><td>$phone</td><td><div><a href ='welcome.php?editoid=$oid' class='btn btn-primary active' role='button' aria-pressed='true'>Edit</a>  <a href ='welcome.php?deleteoid=$oid' class='btn btn-primary active' role='button' aria-pressed='true'>Delete</a></div></tr>";
     }
     print "</table></div>";
 }
