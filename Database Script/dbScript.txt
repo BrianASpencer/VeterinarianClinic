@@ -9,6 +9,15 @@ CREATE TABLE vets(
 	PRIMARY KEY(uid)
 );
 
+
+CREATE TABLE owners(
+	oid INT AUTO_INCREMENT,
+	fName VARCHAR(20),
+	lName VARCHAR(20),
+	phoneNum VARCHAR(20),
+	PRIMARY KEY(oid)
+);
+
 CREATE TABLE patients(
 	pid INT AUTO_INCREMENT,
 	ownerID INT,
@@ -18,12 +27,4 @@ CREATE TABLE patients(
 	dOB DATE,
 	PRIMARY KEY(pid),
 	FOREIGN KEY (ownerID) REFERENCES owners(oid)
-);
-
-CREATE TABLE owners(
-	oid INT AUTO_INCREMENT,
-	fName VARCHAR(20),
-	lName VARCHAR(20),
-	phoneNum VARCHAR(20),
-	PRIMARY KEY(oid)
 );
