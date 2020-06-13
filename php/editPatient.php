@@ -2,6 +2,8 @@
 // for database connnection
 include("config.php");
 
+$error = "";
+
 // make sure the ID passed is an integer, otherwise go back to welcome page.
 if(is_numeric($_GET['pid'])){
     $patientID = intval($_GET['pid']);
@@ -45,8 +47,8 @@ $bPlace = "DOB: ".htmlspecialchars($fields['dOB']);
 
     <head>
         <title>Edit Patient</title>
-        <link rel="shortcut icon" href="parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
-        <link rel="stylesheet" href="design.css">
+        <link rel="shortcut icon" href="../images/parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
+        <link rel="stylesheet" href="../css/design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -57,7 +59,7 @@ $bPlace = "DOB: ".htmlspecialchars($fields['dOB']);
     <body class="p-3 mb-2 bg-primary text-white">
 
         <h1 class="display-1">Clinic Manager</h1>
-        <img src="hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
+        <img src="../images/hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
         <br><br>
 
         <div align = "center">
@@ -77,6 +79,7 @@ $bPlace = "DOB: ".htmlspecialchars($fields['dOB']);
                         <br>
                         <input type="text" class="form-control" placeholder="<?php echo $bPlace; ?>" name="birth">
                         <br>
+                        <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
                         <button type="submit" name="submit" class="btn btn-secondary btn-lg btn-block">Submit Changes</button>
                     </form>
 

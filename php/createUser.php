@@ -15,15 +15,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Username must be an email address";
     } else {
         if ($mypassword == $myConfpassword) {
-            $sql = "SELECT vid FROM vets WHERE uName = '".$myusername."';";
-            $result = mysqli_query($db,$sql);
-            $row = mysqli_fetch_assoc($result);
-
-            $count = mysqli_num_rows($result);
+            try {
+                $stmt = mysqli_stmt_init($db);
+                $sql = mysqli_stmt_prepare($stmt, 'SELECT vid FROM vets WHERE uName = ?');
+                $sql->bind_param('s', $_POST['username']);
+                //$result = mysqli_query($db, $sql);
+                $sql->execute();
+            } catch(Exception $e) {
+                $sql->rollback();
+                throw $e;
+            }  
+            $count = 0;
             if($count == 0) {
-                $sql = "INSERT INTO vets(uName, pWord) VALUES('".$myusername."','".$mypassword."');";
-                $result = mysqli_query($db, $sql);
-                header("location:login.php");
+                try {
+                    $sql = $db->prepare('INSERT INTO vets(uName, pWord) VALUES(?, ?)');
+                    $sql->bind_param('ss', 'off@yahoo.com', '123');
+                    echo $sql -> error;die;
+                    $sql->execute();
+                    //$result = mysqli_query($db, $sql);
+                } catch(Exception $e) {
+                    $sql->rollback(); //remove all queries from queue if error (undo)
+                    throw $e;
+                }  
+                header("location:login.php?id=1212121212");
             } else {
                 $error = "User already exists.";
             }
@@ -34,13 +48,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         
 }
 ?>
-
 <html>
 
     <head>
         <title>Create Account</title>
-        <link rel="shortcut icon" href="parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
-        <link rel="stylesheet" href="design.css">
+        <link rel="shortcut icon" href="../images/parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
+        <link rel="stylesheet" href="../css/design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -52,7 +65,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <div>
             <h1 class="display-1">Clinic Manager</h1>
-            <img src="hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
+            <img src="../images/hospital-512.png" width="128" height="128" class="img-fluid rounded mx-auto d-block">
         </div>
         
         <div align = "center">
