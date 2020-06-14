@@ -15,34 +15,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Username must be an email address";
     } else {
         if ($mypassword == $myConfpassword) {
-            try {
-                $stmt = mysqli_stmt_init($db);
-                $sql = mysqli_stmt_prepare($stmt, 'SELECT vid FROM vets WHERE uName = ?');
-                $sql->bind_param('s', $_POST['username']);
-                //$result = mysqli_query($db, $sql);
-                $sql->execute();
-            } catch(Exception $e) {
-                $sql->rollback();
-                throw $e;
-            }  
-            $count = 0;
+            $sql = 'SELECT vid FROM vets WHERE uName = (?)';
+            if (!mysqli_prepare($db, $sql)) {
+                echo "SQL error";
+            } else {
+                $stmt = mysqli_prepare($db, $sql);
+                mysqli_stmt_bind_param($stmt, "s", $myusername);
+                mysqli_stmt_execute($stmt);
+            }
+            $result = mysqli_stmt_get_result($stmt);
+            $row = mysqli_fetch_assoc($result);
+            $count = mysqli_num_rows($result);
             if($count == 0) {
-                try {
-                    $sql = $db->prepare('INSERT INTO vets(uName, pWord) VALUES(?, ?)');
-                    $sql->bind_param('ss', 'off@yahoo.com', '123');
-                    echo $sql -> error;die;
-                    $sql->execute();
-                    //$result = mysqli_query($db, $sql);
-                } catch(Exception $e) {
-                    $sql->rollback(); //remove all queries from queue if error (undo)
-                    throw $e;
-                }  
-                header("location:login.php?id=1212121212");
+                $sql = 'INSERT INTO vets(uName, pWord) VALUES(?, ?)';
+                if (!mysqli_prepare($db, $sql)) {
+                    echo "SQL error";
+                } else {
+                    $stmt = mysqli_prepare($db, $sql);
+                    mysqli_stmt_bind_param($stmt, "ss", $myusername, $mypassword);
+                    mysqli_stmt_execute($stmt); 
+                }
+                header("location:login.php");
             } else {
                 $error = "User already exists.";
             }
         } else {
-            $error = "Passwords must match or Username is already taken.";
+            $error = "Passwords must match.";
         }
     }
         
