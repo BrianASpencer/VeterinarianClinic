@@ -20,13 +20,22 @@ function query($query) {
     return $result; 
 }
 
-// query to delete all owners with the passed ID value
-$query = "DELETE FROM owners WHERE oid=$ownerID;";
+$query = "SELECT * FROM patients WHERE ownerID=$ownerID";
 
-query($query);
+$result = query($query);
 
-//return to welcome page after deletion
-header("Location: welcome.php");
-exit();
+$row = mysqli_fetch_assoc($result);
+$count = mysqli_num_rows($result);
 
+if ($count > 0) {
+    $errorMsg = "***Patient(s) are owned by this person! Please edit or delete those patients first.***";
+    header("Location:welcome.php?error=$errorMsg");
+} else {
+    // query to delete all patients with the passed ID value
+    $query = "DELETE FROM owners WHERE oid=$ownerID";
+
+    query($query);
+    //return to welcome page after deletion
+    header("Location: welcome.php?error=");
+}
 ?>

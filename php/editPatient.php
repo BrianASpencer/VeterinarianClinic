@@ -8,7 +8,7 @@ $error = "";
 if(is_numeric($_GET['pid'])){
     $patientID = intval($_GET['pid']);
 } else {
-    header("location:welcome.php");
+    header("location:welcome.php?error=");
     exit();
 }
     
@@ -22,16 +22,8 @@ function query($query) {
     return $result; 
 }
 
-// lookign at POST form to see if submit button was pressed
-// if so, query database to edit patient
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_POST['submit'])){
-        header("location:welcome.php");
-        exit();
-    }
-}
 
-// these statements query and then fill in the fields of the boxes
+
 $query = "SELECT * FROM patients WHERE pid=$patientID";
 $result = query($query);
 $fields = mysqli_fetch_assoc($result);
@@ -40,6 +32,41 @@ $nPlace = "Name: ".htmlspecialchars($fields['fName']);
 $sPlace = "Species: ".htmlspecialchars($fields['species']);
 $cPlace = "Color: ".htmlspecialchars($fields['color']);
 $bPlace = "DOB: ".htmlspecialchars($fields['dOB']);
+
+function gatherFields($fields) {
+    $indexArr = array('ownerID', 'fName', 'species', 'color', 'dOB');
+    $helperArr = array($_POST['ownerID'], $_POST['name'], $_POST['species'], $_POST['color'], $_POST['birth']);
+    $result = array();
+    for($i = 0; $i < count($helperArr); $i+= 1) {
+        if (strlen($helperArr[$i]) == 0) {
+            array_push($result, $fields[$indexArr[$i]]);
+        } else {
+            array_push($result, $helperArr[$i]);
+        }
+    }
+    $result[0] = intval($result[0]);
+    return $result;
+}
+// lookign at POST form to see if submit button was pressed
+// if so, query database to edit patient
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST['submit'])){
+        // array of information provided in form
+        $editedFields = gatherFields($fields);
+        $query = 'UPDATE patients SET ownerID= (?), fName= (?), species= (?), color=(?), dOB=(?)  where pid= (?)';
+        if (!mysqli_prepare($db, $query)) {
+            echo "SQL error";
+        } else {
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "issssi", $editedFields[0], $editedFields[1], $editedFields[2], $editedFields[3],
+                                  $editedFields[4], $patientID);
+            mysqli_stmt_execute($stmt);
+        }
+        $result = mysqli_stmt_get_result($stmt);
+        header("location:welcome.php?error=");
+        exit();
+    }
+}
 
 ?>
 

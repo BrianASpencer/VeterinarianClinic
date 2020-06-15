@@ -13,22 +13,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $fName = $_POST['firstName'];
         $lName = $_POST['lastName'];
         $phoneNum = $_POST['phoneNumber'];
-        $query = "INSERT INTO owners(fName, lName, phoneNum) VALUES('".$fName."', '".$lName."', '".$phoneNum."');";
-        query($db, $query);
-        header("location:welcome.php");
+        $query = "INSERT INTO owners(fName, lName, phoneNum) VALUES(?, ?, ?);";
+        if (!mysqli_prepare($db, $query)) {
+            echo "SQL error";
+        } else {
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "sss", $fName, $lName, $phoneNum);
+            mysqli_stmt_execute($stmt);
+        }
+
+        header("location:welcome.php?error=");
         exit();
     }
 }
 
-// function to query the database
-function query($query) {
-    global $db;
-    $result = mysqli_query($db, $query);
-    if (!$result) {
-        return -1;
-    }
-    return $result; 
-}
 
 ?>
 
@@ -58,13 +56,13 @@ function query($query) {
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="First Name" aria-label="First Name" aria-describedby="basic-addon2" name="firstName">
+                        <input type="text" class="form-control" placeholder="First Name" name="firstName">
                         <br>
-                        <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="basic-addon2" name="lastName">
+                        <input type="text" class="form-control" placeholder="Last Name" name="lastName">
                         <br>
-                        <input type="text" class="form-control" placeholder="Phone Number 123-456-7890" aria-label="Phone Number 123-456-7890" aria-describedby="basic-addon2" name="phoneNumber">
+                        <input type="text" class="form-control" placeholder="Phone Number 123-456-7890" name="phoneNumber">
                         <br>
-                        <div style = "font-size:11px; color: white;><?php echo $error; ?></div>
+                        <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
                         <button type="submit" name="add" class="btn btn-secondary btn-lg btn-block">Add Owner</button>
                     </form>
 

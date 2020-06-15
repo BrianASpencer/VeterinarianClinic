@@ -15,6 +15,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Username must be an email address";
     } else {
         if ($mypassword == $myConfpassword) {
+            $mypassword = password_hash($mypassword, PASSWORD_DEFAULT);
             $sql = 'SELECT vid FROM vets WHERE uName = (?)';
             if (!mysqli_prepare($db, $sql)) {
                 echo "SQL error";
@@ -72,11 +73,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="Your Username" aria-label=" Your Username" aria-describedby="basic-addon2" name="username">
+                        <input type="text" class="form-control" placeholder="Your Username" name="username">
                         <br>
-                        <input type="password" class="form-control" placeholder="Your Password" aria-label="Your Password" aria-describedby="basic-addon2" name="password">
+                        <input type="password" class="form-control" placeholder="Your Password" name="password">
                         <br>
-                        <input type="password" class="form-control" placeholder="Confirm Password" aria-label="Confirm Password" aria-describedby="basic-addon2" name="confPassword">
+                        <input type="password" class="form-control" placeholder="Confirm Password" name="confPassword">
                         <br>
                         <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
                         <button type="submit" class="btn btn-secondary btn-lg btn-block">Create New Account</button>

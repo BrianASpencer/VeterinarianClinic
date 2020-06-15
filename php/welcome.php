@@ -2,8 +2,47 @@
 // for database connnection and username information
 include('session.php');
 
+// looking at POST form to either logout or add an owner or to add a patient
+// specifically, if those buttons are pressed
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_REQUEST['logout'])){
+        header("location:logout.php");
+        exit();
+    }
+    if(isset($_REQUEST['addOwner'])){
+        header("location:addOwner.php");
+        exit();
+    }
+    if(isset($_REQUEST['addPatient'])){
+        header("location:addPatient.php");
+        exit();
+    }
+}
+
+// requesting if any edit or delete button is pressed for patients/owners
+if(isset($_REQUEST['editoid'])) {
+    $oid = intval($_REQUEST['editoid']);
+    header("Location:editOwner.php?oid=$oid");
+    exit();
+}
+if(isset($_REQUEST['deleteoid'])) {
+    $oid = intval($_REQUEST['deleteoid']);
+    header("Location:deleteOwner.php?oid=$oid");
+    exit();
+}
+if(isset($_REQUEST['editpid'])) {
+    $pid = intval($_REQUEST['editpid']);
+    header("Location:editPatient.php?pid=$pid");
+    exit();
+}
+if(isset($_REQUEST['deletepid'])) {
+    $pid = intval($_REQUEST['deletepid']);
+    header("Location:deletePatient.php?pid=$pid");
+    exit();
+} 
+
 print "<body class='p-3 mb-2 bg-primary text-white'> 
-        <h1>Welcome ";
+        <h1>Welcome, ";
 echo htmlspecialchars($login_session);
 print "!</h1>";
 print "<img src='../images/hospital-512.png' width='128' height='128' class='img-fluid rounded mx-auto d-block'>
@@ -74,53 +113,20 @@ function generate($data) {
     } else {
         renderOwnerTable($patOwn);
     }
+    
 }
 
 // creating our tables, as well as add buttons 
 generate('Patients');
 
+if (strlen($_GET['error']) > 0) {
+    $error = $_GET['error'];
+    print "<div style = 'font-size:1 rem; color: white;' class = 'text-center font-weight-bold'>";
+    print $error; 
+    print "</div>";
+}
+
 generate('Owners');
 
-
-
-
-// looking at POST form to either logout or add an owner or to add a patient
-// specifically, if those buttons are pressed
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_REQUEST['logout'])){
-        header("location:logout.php");
-        exit();
-    }
-    if(isset($_REQUEST['addOwner'])){
-        header("location:addOwner.php");
-        exit();
-    }
-    if(isset($_REQUEST['addPatient'])){
-        header("location:addPatient.php");
-        exit();
-    }
-}
-
-// requesting if any edit or delete button is pressed for patients/owners
-if(isset($_REQUEST['editoid'])) {
-    $oid = intval($_REQUEST['editoid']);
-    header("Location:editOwner.php?oid=$oid");
-    exit();
-}
-if(isset($_REQUEST['deleteoid'])) {
-    $oid = intval($_REQUEST['deleteoid']);
-    header("Location:deleteOwner.php?oid=$oid");
-    exit();
-}
-if(isset($_REQUEST['editpid'])) {
-    $pid = intval($_REQUEST['editpid']);
-    header("Location:editPatient.php?pid=$pid");
-    exit();
-}
-if(isset($_REQUEST['deletepid'])) {
-    $pid = intval($_REQUEST['deletepid']);
-    header("Location:deletePatient.php?pid=$pid");
-    exit();
-} 
 include('../html/welcome.html');
 ?>

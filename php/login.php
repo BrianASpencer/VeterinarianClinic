@@ -16,23 +16,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $mypassword = mysqli_real_escape_string($db,$_POST['password']);
         }
         
+        $count = 2;
+        $sql = "SELECT * FROM vets WHERE uName = (?)";
+        if (!mysqli_prepare($db, $sql)) {
+            echo "SQL error";
+        } else {
+            $stmt = mysqli_prepare($db, $sql);
+            mysqli_stmt_bind_param($stmt, "s", $myusername);
+            mysqli_stmt_execute($stmt);
+        }
 
-        $sql = "SELECT vid FROM vets WHERE uName = '".$myusername."' and pWord = '".$mypassword."';";
-        $result = mysqli_query($db,$sql);
-        $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-        $active = $row['active'];
-
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
         $count = mysqli_num_rows($result);
-
+        if ($count > 0) {
+            $pw = $row['pWord'];
+        } else {
+            $pw = '';
+        }
+        
         // If result matched $myusername and $mypassword, table row must be 1 row
         // this means there is a user that exists with these credentials
-        if($count == 1) {
+        if($count == 1 and password_verify($mypassword, $pw)) {
             //session_register("myusername");
             $_SESSION['login_user'] = $myusername;
-            header("location: welcome.php");
+            header("location: welcome.php?error=");
             exit();
         } else if ($count == 0) {
             $error = "User doesn't exist.";
+            echo $hashedPW;
         } else {
             // invalid login to let them know to try again
             $error = "Invalid login. Please try again.";
@@ -76,9 +88,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2" name="username">
+                        <input type="text" class="form-control" placeholder="Username" name="username">
                         <br>
-                        <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" name="password">
+                        <input type="password" class="form-control" placeholder="Password" name="password">
                         <br>
                         <div style = "font-size:11px; color: white;" class="font-weight-bold"><?php echo $error; ?></div>
                         <button type="submit" name="login" class="btn btn-secondary btn-lg btn-block">Login</button>

@@ -21,12 +21,12 @@ function query($query) {
 }
 
 // query to delete all patients with the passed ID value
-$query = "DELETE FROM patients WHERE pid=$patientID;";
+$query = "DELETE FROM patients WHERE pid=$patientID";
 
 query($query);
 
 //return to welcome page after deletion
-header("Location: welcome.php");
+header("Location: welcome.php?error=");
 exit();
 
 ?>

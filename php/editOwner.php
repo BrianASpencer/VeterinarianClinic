@@ -8,10 +8,10 @@ $error = "";
 if(is_numeric($_GET['oid'])){
     $ownerID = intval($_GET['oid']);
 } else {
-    header("location:welcome.php");
+    header("location:welcome.php?error=");
     exit();
 }
-
+    
 // function to query the database
 function query($query) {
     global $db;
@@ -23,11 +23,10 @@ function query($query) {
 }
 
 // lookign at POST form to see if submit button was pressed
-// if so, query database to edit owner
+// if so, query database to edit patient
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //user wnats to create an account
     if(isset($_POST['submit'])){
-        header("location:welcome.php");
+        header("location:welcome.php?error=");
         exit();
     }
 }
@@ -36,16 +35,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 $query = "SELECT * FROM owners WHERE oid=$ownerID";
 $result = query($query);
 $fields = mysqli_fetch_assoc($result);
-$fnPlace = "First Name: ".htmlspecialchars($fields['fName']);
-$lnPlace = "Last Name: ".htmlspecialchars($fields['lName']);
-$pnPlace = "Phone Number: ".htmlspecialchars($fields['phoneNum']);
+$fName = "First Name: ".htmlspecialchars($fields['fName']);
+$lName = "Second Name: ".htmlspecialchars($fields['lName']);
+$phoneNum = "Phone Number: ".htmlspecialchars($fields['phoneNum']);
 
 ?>
 
 <html>
 
     <head>
-        <title>Edit Owner</title>
+        <title>Edit Patient</title>
         <link rel="shortcut icon" href="../images/parkway-veterinary-hospital-dublin-veterinarian-png-vet-400_387.png">
         <link rel="stylesheet" href="../css/design.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -68,14 +67,14 @@ $pnPlace = "Phone Number: ".htmlspecialchars($fields['phoneNum']);
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="<?php echo $fnPlace; ?>" name="firstName">
+                        <input type="text" class="form-control" placeholder="<?php echo $fName; ?>" name="ownerID">
                         <br>
-                        <input type="text" class="form-control" placeholder="<?php echo $lnPlace; ?>" name="lastName">
+                        <input type="text" class="form-control" placeholder="<?php echo $lName; ?>" name="name">
                         <br>
-                        <input type="text" class="form-control" placeholder="<?php echo $pnPlace; ?>" name="phoneNumber">
+                        <input type="text" class="form-control" placeholder="<?php echo $phoneNum; ?>" name="species">
                         <br>
                         <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
-                        <button type="submit" name="edit" class="btn btn-secondary btn-lg btn-block">Submit Changes</button>
+                        <button type="submit" name="submit" class="btn btn-secondary btn-lg btn-block">Submit Changes</button>
                     </form>
 
                 </div>

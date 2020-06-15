@@ -15,23 +15,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $species = $_POST['species'];
         $color = $_POST['color'];
         $birth = $_POST['birth'];
-        $query = "INSERT INTO patients(ownerID, fName, species, color, dOB) VALUES('".$ownerID."', '".$name."', '".$species."', '".$color."', '".$birth."');";
-        query($db, $query);
-        header("location:welcome.php");
+        $query = "INSERT INTO patients(ownerID, fName, species, color, dOB) VALUES(?, ?, ?, ?, ?);";
+        if (!mysqli_prepare($db, $query)) {
+            echo "SQL error";
+        } else {
+            $stmt = mysqli_prepare($db, $query);
+            mysqli_stmt_bind_param($stmt, "sssss", $ownerID, $name, $species, $color, $birth);
+            mysqli_stmt_execute($stmt);
+        }
+        header("location:welcome.php?error=");
         exit();
     }
 }
-
-// function to query the database
-function query($query) {
-    global $db;
-    $result = mysqli_query($db, $query);
-    if (!$result) {
-        return -1;
-    }
-    return $result; 
-}
-
 ?>
 
 <html>
@@ -60,15 +55,15 @@ function query($query) {
                 <div style = "margin:30px">
 
                     <form action = "" method = post>
-                        <input type="text" class="form-control" placeholder="Owner's ID" aria-label="Owner's ID" aria-describedby="basic-addon2" name="ownerID">
+                        <input type="text" class="form-control" placeholder="Owner's ID" name="ownerID">
                         <br>
-                        <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="basic-addon2" name="name">
+                        <input type="text" class="form-control" placeholder="Name" name="name">
                         <br>
-                        <input type="text" class="form-control" placeholder="Species" aria-label="Species" aria-describedby="basic-addon2" name="species">
+                        <input type="text" class="form-control" placeholder="Species" name="species">
                         <br>
-                        <input type="text" class="form-control" placeholder="Color" aria-label="Color" aria-describedby="basic-addon2" name="color">
+                        <input type="text" class="form-control" placeholder="Color" name="color">
                         <br>
-                        <input type="text" class="form-control" placeholder="Date Of Birth YYYY-MM-DD" aria-label="Date Of Birth YYYY-MM-DD" aria-describedby="basic-addon2" name="birth">
+                        <input type="text" class="form-control" placeholder="Date Of Birth YYYY-MM-DD" name="birth">
                         <br>
                         <div style = "font-size:11px; color: white;"><?php echo $error; ?></div>
                         <button type="submit" name="add" class="btn btn-secondary btn-lg btn-block">Add Patient</button>
