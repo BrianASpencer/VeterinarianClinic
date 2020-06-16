@@ -12,7 +12,7 @@ CREATE TABLE vets(
 CREATE TABLE owners(
 	oid INT AUTO_INCREMENT,
 	fName VARCHAR(20),
-	lName VARCHAR(20),clinicdbowners
+	lName VARCHAR(20),
 	phoneNum VARCHAR(20),
 	PRIMARY KEY(oid)
 );
