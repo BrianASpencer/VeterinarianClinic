@@ -3,17 +3,16 @@ CREATE DATABASE clinicdb;
 USE clinicdb;
 
 CREATE TABLE vets(
-	uid INT AUTO_INCREMENT,
+	vid INT AUTO_INCREMENT,
 	uName VARCHAR(50),
-	pWord VARCHAR(20),
-	PRIMARY KEY(uid)
+	pWord VARCHAR(255),
+	PRIMARY KEY(vid)
 );
-
 
 CREATE TABLE owners(
 	oid INT AUTO_INCREMENT,
 	fName VARCHAR(20),
-	lName VARCHAR(20),
+	lName VARCHAR(20),clinicdbowners
 	phoneNum VARCHAR(20),
 	PRIMARY KEY(oid)
 );
@@ -28,3 +27,12 @@ CREATE TABLE patients(
 	PRIMARY KEY(pid),
 	FOREIGN KEY (ownerID) REFERENCES owners(oid)
 );
+
+INSERT INTO owners(fName, lName, phoneNum) VALUES("Jane", "Doe", "606-123-1234");
+INSERT INTO owners(fName, lName, phoneNum) VALUES("John", "Smith", "123-456-7890");
+INSERT INTO owners(fName, lName, phoneNum) VALUES("Bob", "Smith", "606-599-1111");
+
+INSERT INTO patients(ownerid, fname, species, color, dob) VALUES(1, "fido", "Jack Russell", "Brown", "2020-05-10");
+INSERT INTO patients(ownerid, fname, species, color, dob) VALUES(2, "sport", "Golden Retriever", "Blond", "2020-05-10");
+INSERT INTO patients(ownerid, fname, species, color, dob) VALUES(3, "Jacky", "Terrier", "White", "2017-11-12");
+INSERT INTO patients(ownerid, fname, species, color, dob) VALUES(3, "Ace", "Pitbull", "Brown", "2016-12-05");
