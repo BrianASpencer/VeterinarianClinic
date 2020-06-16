@@ -11,30 +11,30 @@
 ## **How To Run The Program (Linux)**
 
 * Install Apache (cross-platform)
- * *yum install httpd*
+  * *yum install httpd*
 
 * Start Apache server
- * *service httpd start*
+  * *service httpd start*
 
 * find document root via 
- * *etc /etc/httpd/conf/httpd.conf*
+  * *etc /etc/httpd/conf/httpd.conf*
  
 * use emacs or text editor/viewer to look for DocumentRoot
- * *("var/www/html" for example)*
+  * *("var/www/html" for example)*
 
 * Put repository contents in this folder
 
 * Install PHP
- * *yum install php*
+  * *yum install php*
 
 * Install mariadb for database server
- * *yum -y install mariadb-server mariadb*
+  * *yum -y install mariadb-server mariadb*
 
 * Start database server
- * *service mariadb start*
+  * *service mariadb start*
 
 * Start MySQL Query
- * *mysql*
+  * *mysql*
 
 * Paste database script contents
 
