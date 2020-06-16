@@ -32,3 +32,8 @@
 * Now, to execute the script, either hit the blue play arrow or select the whole script and right-click and hit run or run selection.
 
 ![Image of HeidiSQL w/Selection](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20HeidiSQL%20wSelection.png)
+
+
+## **How To Use the Program** 
+
+* Just create a new account and login. After that, all features of the application are available to use.
