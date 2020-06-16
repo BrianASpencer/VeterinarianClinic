@@ -3,7 +3,7 @@
 </h1>
 
 ## Table of Contents
-[Requirments](https://github.com/BrianASpencer/VeterinarianClinic#requirments)
+[Requirements](https://github.com/BrianASpencer/VeterinarianClinic#requirements)
 <br>
 [Setting up on Linux](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Linux)
 <br>
@@ -12,7 +12,7 @@
 [How To Use the Program](https://github.com/BrianASpencer/VeterinarianClinic#how-to-use-the-program)
 <br>
 
-## **Requirments**
+## **Requirements**
 
 * You will need a valid PHP install (either PHP 5 or PHP 7).
 
