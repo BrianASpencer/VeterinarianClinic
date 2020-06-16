@@ -30,7 +30,7 @@
 
 * Find document root
   * *etc /etc/httpd/conf/httpd.conf*
-  * use emacs or text editor/viewer to look for DocumentRoot (usually looks like this *var/www/html*)*
+  * use emacs or any text editor/viewer to look for DocumentRoot (usually looks like this *var/www/html*)*
 
 * Put repository contents in this folder
 
