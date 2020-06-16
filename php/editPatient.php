@@ -47,24 +47,61 @@ function gatherFields($fields) {
     $result[0] = intval($result[0]);
     return $result;
 }
+
+function validateDate($date) {
+    if (!strtotime($date)) {
+        return false;
+    }
+    list($year, $month, $day) = explode('-', $date);
+    return checkdate($month, $day, $year);
+}
+
+function doesOwnerExist($ownerID) {
+    global $db;
+    $sql = 'SELECT * FROM owners WHERE oid = (?)';
+    if (!mysqli_prepare($db, $sql)) {
+        echo "SQL error";
+    } else {
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $ownerID);
+        mysqli_stmt_execute($stmt);
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $count = mysqli_num_rows($result);
+    return ($count >0);
+}
+
 // lookign at POST form to see if submit button was pressed
 // if so, query database to edit patient
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['submit'])){
-        // array of information provided in form
         $editedFields = gatherFields($fields);
-        $query = 'UPDATE patients SET ownerID= (?), fName= (?), species= (?), color=(?), dOB=(?)  where pid= (?)';
-        if (!mysqli_prepare($db, $query)) {
-            echo "SQL error";
+        $newOwnerID = $editedFields[0];
+        $exists = doesOwnerExist($newOwnerID);
+        $date = validateDate($editedFields[4]);
+        if ($exists and $date) {
+            // array of information provided in form
+            $query = 'UPDATE patients SET ownerID= (?), fName= (?), species= (?), color=(?), dOB=(?)  where pid= (?)';
+            if (!mysqli_prepare($db, $query)) {
+                echo "SQL error";
+            } else {
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "issssi", $editedFields[0], $editedFields[1], $editedFields[2], $editedFields[3],
+                                      $editedFields[4], $patientID);
+                mysqli_stmt_execute($stmt);
+            }
+            $result = mysqli_stmt_get_result($stmt);
+            header("location:welcome.php?error=");
+            exit();
         } else {
-            $stmt = mysqli_prepare($db, $query);
-            mysqli_stmt_bind_param($stmt, "issssi", $editedFields[0], $editedFields[1], $editedFields[2], $editedFields[3],
-                                  $editedFields[4], $patientID);
-            mysqli_stmt_execute($stmt);
+            if (!$exists) {
+                $error = 'Owner does not exist.';
+            }
+            if (!$date) {
+                $error = $error.' Date is invalid. Please use YYYY-MM-DD.';
+            }
         }
-        $result = mysqli_stmt_get_result($stmt);
-        header("location:welcome.php?error=");
-        exit();
     }
 }
 
