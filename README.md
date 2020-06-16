@@ -8,6 +8,36 @@
 
 * You will have to use MySQL to host the database.
 
+## **How To Run The Program (Linux)**
+
+* Install Apache (cross-platform)
+ * *yum install httpd*
+
+* Start Apache server
+ * *service httpd start*
+
+* find document root via 
+ * *etc /etc/httpd/conf/httpd.conf*
+ 
+* use emacs or text editor/viewer to look for DocumentRoot
+ * *("var/www/html" for example)*
+
+* Put repository contents in this folder
+
+* Install PHP
+ * *yum install php*
+
+* Install mariadb for database server
+ * *yum -y install mariadb-server mariadb*
+
+* Start database server
+ * *service mariadb start*
+
+* Start MySQL Query
+ * *mysql*
+
+* Paste database script contents
+
 ## **How To Run The Program (Windows with XAMPP and HeidiSQL)** 
 
 * First, navigate to *C:\xampp\htdocs\scripts* and dump the repository there.
