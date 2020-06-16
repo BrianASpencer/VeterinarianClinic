@@ -2,6 +2,16 @@
  Veterinarian Clinic Manager
 </h1>
 
+## Table of Contents
+[Requirments](https://github.com/BrianASpencer/VeterinarianClinic#requirments)
+<br>
+[Setting up on Linux](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Linux)
+<br>
+[Setting up on Windows](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Linux-Windows-with-XAMPP-and-HeidiSQL)
+<br>
+[How To Use the Program](https://github.com/BrianASpencer/VeterinarianClinic#how-to-use-the-program)
+<br>
+
 ## **Requirments**
 
 * You will need a valid PHP install (either PHP 5 or PHP 7).
@@ -10,7 +20,7 @@
 
 * You will have to use MySQL to host the database.
 
-## **How To Run The Web App (Linux)**
+## **Setting up on Linux**
 
 * Install Apache (cross-platform)
   * *yum install httpd*
@@ -38,7 +48,9 @@
 
 * Paste database script contents
 
-## **How To Run The Web App (Windows with XAMPP and HeidiSQL)** 
+## Setting up on Linux Windows with XAMPP and HeidiSQL** 
+
+* If you don't have PHP installed, head to https://windows.php.net/download#php-7.4 and install the latest version.
 
 * First, navigate to *C:\xampp\htdocs\scripts* and dump the repository there.
   * If you're not using XAMPP to run your Apache Server, just make sure they're in the scripts folder of wherever your http://localhost/ accesses files.
@@ -62,7 +74,6 @@
 * Now, to execute the script, either hit the blue play arrow or select the whole script and right-click and hit run or run selection.
 
 ![Image of HeidiSQL w/Selection](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20HeidiSQL%20wSelection.png)
-
 
 ## **How To Use the Program** 
 
