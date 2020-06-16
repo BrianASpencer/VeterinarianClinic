@@ -50,7 +50,10 @@
 
 ## Setting up on Linux Windows with XAMPP and HeidiSQL** 
 
-* If you don't have PHP installed, head to https://windows.php.net/download#php-7.4 and install the latest version.
+* Installations:
+  * If you don't have PHP installed, head to https://windows.php.net/download#php-7.4 and install the latest version.
+  * If you don't have XAMPP, head over to https://www.apachefriends.org/download.html.
+  * If you don't have HeidiSQL, head over to https://www.heidisql.com/download.php.
 
 * First, navigate to *C:\xampp\htdocs\scripts* and dump the repository there.
   * If you're not using XAMPP to run your Apache Server, just make sure they're in the scripts folder of wherever your http://localhost/ accesses files.
