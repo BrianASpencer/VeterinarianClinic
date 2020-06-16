@@ -20,13 +20,13 @@ function query($query) {
     return $result; 
 }
 
+// preparing query to see if owner has pets that are patients
 $query = "SELECT * FROM patients WHERE ownerID=$ownerID";
-
 $result = query($query);
-
 $row = mysqli_fetch_assoc($result);
 $count = mysqli_num_rows($result);
 
+// if they do, tell user that they have patients
 if ($count > 0) {
     $errorMsg = "***Patient(s) are owned by this person! Please edit or delete those patients first.***";
     header("Location:welcome.php?error=$errorMsg");

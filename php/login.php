@@ -6,17 +6,21 @@ session_start();
 $error = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    // user hits login button
     if(isset($_POST['login'])) {
+        // if user's entered email isn't an email
+        // skip login process and tell them it's wrong
         if (!filter_var($_POST['username'], FILTER_VALIDATE_EMAIL)) {
             $error = "A valid email address is required.";
             goto end;
         } else {
-            $myusername = mysqli_real_escape_string($db,$_POST['username']);
-            $mypassword = mysqli_real_escape_string($db,$_POST['password']);
+            // gather their input
+            $myusername = mysqli_real_escape_string($db, $_POST['username']);
+            $mypassword = mysqli_real_escape_string($db, $_POST['password']);
         }
         
         $count = 2;
+        // prepare query to check if user exists
         $sql = "SELECT * FROM vets WHERE uName = (?)";
         if (!mysqli_prepare($db, $sql)) {
             echo "SQL error";
@@ -25,10 +29,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_bind_param($stmt, "s", $myusername);
             mysqli_stmt_execute($stmt);
         }
-
+        
+        // get number of results
         $result = mysqli_stmt_get_result($stmt);
         $row = mysqli_fetch_assoc($result);
         $count = mysqli_num_rows($result);
+        
+        // if there's a user, get their password
         if ($count > 0) {
             $pw = $row['pWord'];
         } else {
@@ -43,8 +50,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             header("location: welcome.php?error=");
             exit();
         } else if ($count == 0) {
+            // let user know they're not in system
             $error = "User doesn't exist.";
-            echo $hashedPW;
         } else {
             // invalid login to let them know to try again
             $error = "Invalid login. Please try again.";
@@ -71,7 +78,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
     </head>
 
     <body class="p-3 mb-2 bg-primary text-white">
@@ -106,7 +112,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <br>
         <footer>
-            <p class="text-center font-weight-bold">Copyright &copy; Hippo Manager Assessment</p>
+            <p class="text-center font-weight-bold">Hippo Manager Assessment &copy; 2020</p>
             <p class="text-center font-weight-bold">Created by Brian Spencer</p>
         </footer>
 
