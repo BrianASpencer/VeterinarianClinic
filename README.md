@@ -77,4 +77,4 @@
 
 ## **How To Use the Program** 
 
-* After navigating to the login page (*login.php*) on localhost, just create a new account and login. After that, all features of the application are available to use.
+* After navigating to the login page (*login.php*) on localhost through a browser, just create a new account and login. After that, all features of the application are available to use.
