@@ -6,27 +6,74 @@ $error = "";
 
 // lookign at POST form to see if add button was pressed
 // if so, query database to add new patient
+function gatherFields() {
+    $indexArr = array('ownerID', 'fName', 'species', 'color', 'dOB');
+    $helperArr = array($_POST['ownerID'], $_POST['name'], $_POST['species'], $_POST['color'], $_POST['birth']);
+    $result = array();
+    for($i = 0; $i < count($helperArr); $i+= 1) {
+        array_push($result, $helperArr[$i]);
+    }
+    $result[0] = intval($result[0]);
+    return $result;
+}
+
+function validateDate($date) {
+    if (!strtotime($date)) {
+        return false;
+    }
+    list($year, $month, $day) = explode('-', $date);
+    return checkdate($month, $day, $year);
+}
+
+function doesOwnerExist($ownerID) {
+    global $db;
+    $sql = 'SELECT * FROM owners WHERE oid = (?)';
+    if (!mysqli_prepare($db, $sql)) {
+        echo "SQL error";
+    } else {
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $ownerID);
+        mysqli_stmt_execute($stmt);
+    }
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $count = mysqli_num_rows($result);
+    return ($count > 0);
+}
+
+// lookign at POST form to see if submit button was pressed
+// if so, query database to add patient
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-    //user wnats to create an account
     if(isset($_POST['add'])){
-        global $db;
-        $ownerID = $_POST['ownerID'];
-        $name = $_POST['name'];
-        $species = $_POST['species'];
-        $color = $_POST['color'];
-        $birth = $_POST['birth'];
-        $query = "INSERT INTO patients(ownerID, fName, species, color, dOB) VALUES(?, ?, ?, ?, ?);";
-        if (!mysqli_prepare($db, $query)) {
-            echo "SQL error";
+        $editedFields = gatherFields();
+        $newOwnerID = $editedFields[0];
+        $exists = doesOwnerExist($newOwnerID);
+        $date = validateDate($editedFields[4]);
+        if ($exists and $date) {
+            // array of information provided in form
+            $query = 'INSERT INTO patients(ownerID, fName, species, color, dOB) VALUES(?, ?, ?, ?, ?)';
+            if (!mysqli_prepare($db, $query)) {
+                echo "SQL error";
+            } else {
+                $stmt = mysqli_prepare($db, $query);
+                mysqli_stmt_bind_param($stmt, "issss", $editedFields[0], $editedFields[1], $editedFields[2], $editedFields[3],
+                                      $editedFields[4]);
+                mysqli_stmt_execute($stmt);
+            }
+            $result = mysqli_stmt_get_result($stmt);
+            header("location:welcome.php?error=");
+            exit();
         } else {
-            $stmt = mysqli_prepare($db, $query);
-            mysqli_stmt_bind_param($stmt, "sssss", $ownerID, $name, $species, $color, $birth);
-            mysqli_stmt_execute($stmt);
+            if (!$exists) {
+                $error = 'Owner does not exist.';
+            }
+            if (!$date) {
+                $error = $error.' Date is invalid. Please use YYYY-MM-DD.';
+            }
         }
-        header("location:welcome.php?error=");
-        exit();
     }
 }
+
 ?>
 
 <html>
@@ -77,7 +124,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <br>
         <footer>
-            <p class="text-center font-weight-bold">Copyright &copy; Hippo Manager Assessment</p>
+            <p class="text-center font-weight-bold">Hippo Manager Assessment &copy; 2020</p>
             <p class="text-center font-weight-bold">Created by Brian Spencer</p>
         </footer>
 
