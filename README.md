@@ -66,4 +66,4 @@
 
 ## **How To Use the Program** 
 
-* Just create a new account and login. After that, all features of the application are available to use.
+* After navigating to the login page (*login.php*) on localhost, just create a new account and login. After that, all features of the application are available to use.
