@@ -8,7 +8,7 @@
 
 * You will have to use MySQL to host the database.
 
-## **How To Run The Program (Linux)**
+## **How To Run The Web App (Linux)**
 
 * Install Apache (cross-platform)
   * *yum install httpd*
@@ -36,7 +36,7 @@
 
 * Paste database script contents
 
-## **How To Run The Program (Windows with XAMPP and HeidiSQL)** 
+## **How To Run The Web App (Windows with XAMPP and HeidiSQL)** 
 
 * First, navigate to *C:\xampp\htdocs\scripts* and dump the repository there.
   * If you're not using XAMPP to run your Apache Server, just make sure they're in the scripts folder of wherever your http://localhost/ accesses files.
