@@ -15,20 +15,20 @@
 
 * Now, start your Apache and MySQL server. Here's how to with XAMPP:
 
-![Image of XAMPP](https://imgur.com/a/N6Xc5XU)
+![Image of XAMPP](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20XAMPP.png)
 
 * Next, click start for the Apache and MySQL modules.
 
-![Image of XAMPP Buttons](https://imgur.com/a/3OJRhiV)
+![Image of XAMPP Buttons](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20XAMPP%20Buttons.png)
 
 * Now, start HeidiSQL and use these values and click Open.
 
-![Image of HeidiSQL](https://imgur.com/a/k6WHKu7)
+![Image of HeidiSQL](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20HeidiSQL.png)
 
 * Next, copy and paste the contents of the database script, found in the database script folder into the Query tab of HeidiSQL.
 
-![Image of HeidiSQL w/Query](https://imgur.com/a/JHuSoF8)
+![Image of HeidiSQL w/Query](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20HeidiSQL%20wQuery.png)
 
 * Now, to execute the script, either hit the blue play arrow or select the whole script and right-click and hit run or run selection.
 
-![Image of HeidiSQL w/Query](https://imgur.com/a/hMduUae)
+![Image of HeidiSQL w/Selection](https://github.com/BrianASpencer/VeterinarianClinic/blob/master/Other/Image%20of%20HeidiSQL%20wSelection.png)
