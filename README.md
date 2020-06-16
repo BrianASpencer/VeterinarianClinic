@@ -16,11 +16,9 @@
 * Start Apache server
   * *service httpd start*
 
-* find document root via 
+* Find document root
   * *etc /etc/httpd/conf/httpd.conf*
- 
-* use emacs or text editor/viewer to look for DocumentRoot
-  * *("var/www/html" for example)*
+  * use emacs or text editor/viewer to look for DocumentRoot (usually looks like this *var/www/html*)*
 
 * Put repository contents in this folder
 
