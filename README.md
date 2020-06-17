@@ -7,7 +7,7 @@
 <br>
 [Setting up on Linux](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Linux)
 <br>
-[Setting up on Windows](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Linux-Windows-with-XAMPP-and-HeidiSQL)
+[Setting up on Windows](https://github.com/BrianASpencer/VeterinarianClinic#Setting-up-on-Windows-with-XAMPP-and-HeidiSQL)
 <br>
 [How To Use the Program](https://github.com/BrianASpencer/VeterinarianClinic#how-to-use-the-program)
 <br>
@@ -48,7 +48,7 @@
 
 * Paste database script contents
 
-## Setting up on Linux Windows with XAMPP and HeidiSQL** 
+## Setting up on Windows with XAMPP and HeidiSQL
 
 * Installations:
   * If you don't have PHP installed, head to https://windows.php.net/download#php-7.4 and install the latest version.
