@@ -2,6 +2,16 @@
  Veterinarian Clinic Manager
 </h1>
 
+* This web application allows for any veterinarian to log in or create an account.
+
+* Once logged in, the user will have a view of all patients and owners.
+
+* Owners have their first name, last name, and phone number information available.
+
+* Patients have their owner, name, species, color, and date of birth information available.
+
+* A veterinarian may add, edit, or delete an owner or patient.
+
 ## Table of Contents
 [Requirements](https://github.com/BrianASpencer/VeterinarianClinic#requirements)
 <br>
